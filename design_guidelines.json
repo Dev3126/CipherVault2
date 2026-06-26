@@ -1,0 +1,179 @@
+{
+  "theme": "dark",
+  "archetype": "4 (Swiss & High-Contrast adapted for Dark Mode Tech/Security)",
+  "colors": {
+    "background": "#0A0E1A",
+    "sidebar": "#0F1729",
+    "surface": "#1E293B",
+    "surfaceHover": "#334155",
+    "primary": "#2563EB",
+    "primaryHover": "#1D4ED8",
+    "success": "#10B981",
+    "warning": "#F59E0B",
+    "danger": "#EF4444",
+    "text": {
+      "primary": "#F8FAFC",
+      "secondary": "#94A3B8",
+      "muted": "#64748B"
+    },
+    "border": "#1E293B"
+  },
+  "typography": {
+    "headings": {
+      "family": "Outfit, sans-serif",
+      "weights": ["600", "700"],
+      "tracking": "tight"
+    },
+    "body": {
+      "family": "Plus Jakarta Sans, sans-serif",
+      "weights": ["400", "500"]
+    }
+  },
+  "layout": {
+    "sidebarWidth": "256px",
+    "headerHeight": "72px",
+    "spacingScale": "Generous (p-6, p-8 for cards)",
+    "borderRadius": "8px for cards, 6px for buttons",
+    "grid": "Control Room style - strict grid hierarchy, dense but clear"
+  },
+  "components": {
+    "sidebar": {
+      "bg": "#0F1729",
+      "activeItemBg": "#2563EB",
+      "activeItemText": "#FFFFFF",
+      "inactiveItemText": "#94A3B8"
+    },
+    "cards": {
+      "bg": "#1E293B",
+      "border": "1px solid rgba(255,255,255,0.05)",
+      "shadow": "none (flat tech look)",
+      "padding": "p-6"
+    },
+    "buttons": {
+      "primary": "bg-[#2563EB] hover:bg-[#1D4ED8] text-white",
+      "secondary": "bg-[#1E293B] hover:bg-[#334155] text-white border border-slate-700"
+    },
+    "dragDropZone": {
+      "border": "2px dashed #334155",
+      "bg": "bg-[#0A0E1A]/50",
+      "hoverBg": "hover:bg-[#1E293B]",
+      "activeBorder": "border-[#2563EB]"
+    },
+    "tables": {
+      "headerBg": "#0F1729",
+      "rowHoverBg": "#1E293B",
+      "borderColor": "#1E293B"
+    }
+  },
+  "icons_library": "lucide-react",
+  "media": {
+    "hero_illustration": {
+      "url": "https://images.unsplash.com/photo-1614064548237-096f735f344f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwyfHxjeWJlciUyMHNlY3VyaXR5JTIwc2hpZWxkfGVufDB8fHx8MTc4MjQ3MjQzN3ww&ixlib=rb-4.1.0&q=85",
+      "description": "padlock on laptop with light trails, used as hero illustration of document/lock",
+      "category": "hero"
+    },
+    "promo_card_bg": {
+       "url": "https://images.unsplash.com/photo-1633265486064-086b219458ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwyfHxzZWN1cmUlMjBmaWxlJTIwbG9ja3xlbnwwfHx8fDE3ODI0NzI0Mzd8MA&ixlib=rb-4.1.0&q=85",
+       "description": "golden padlock on keyboard for promo card 'Your Security is Our Priority'",
+       "category": "background"
+    }
+  },
+  "pages": [
+    {
+      "name": "Login",
+      "layout": "Centered card on dark background",
+      "features": [
+        "Google OAuth button (Shadcn Button with Google icon)",
+        "Title: CipherVault",
+        "Subtitle: Secure File Encryption Platform"
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "layout": "Sidebar + Main Content Grid",
+      "features": [
+        "Welcome Banner: 'Welcome back, User'",
+        "Stat Cards grid (Files Encrypted, Decrypted, Total Size, Success Rate)",
+        "Quick Actions: 2 columns for Quick Encrypt and Quick Decrypt drag-drop zones",
+        "Recent Activity List",
+        "Promo Card: 'Your Security is Our Priority' with secure document illustration"
+      ]
+    },
+    {
+      "name": "Encrypt File",
+      "layout": "Single Column Centered or Wide Card",
+      "features": [
+        "Large Drag & Drop Zone",
+        "Password Input (masked)",
+        "Encrypt Action Button",
+        "Download Result Section"
+      ]
+    },
+    {
+      "name": "Decrypt File",
+      "layout": "Single Column Centered or Wide Card",
+      "features": [
+        "Large Drag & Drop Zone",
+        "Password Input (masked)",
+        "Decrypt Action Button",
+        "Download Result Section"
+      ]
+    },
+    {
+      "name": "My Files",
+      "layout": "Full width data table",
+      "features": [
+        "Table showing Encrypted Files stored",
+        "Columns: Name, Date, Size, Actions (Download, Delete)"
+      ]
+    },
+    {
+      "name": "History",
+      "layout": "Full width data table",
+      "features": [
+        "Table of operations",
+        "Columns: Operation (Encrypt/Decrypt), Filename, Date, Status (Success/Failed)"
+      ]
+    },
+    {
+      "name": "Profile",
+      "layout": "Centered Card",
+      "features": [
+        "User Avatar",
+        "Name, Email from Google",
+        "Account Details"
+      ]
+    },
+    {
+      "name": "Settings",
+      "layout": "Form layout in Card",
+      "features": [
+        "Preferences toggles",
+        "Security settings"
+      ]
+    },
+    {
+      "name": "About Project",
+      "layout": "Text heavy article layout",
+      "features": [
+        "Project description",
+        "Security architecture details"
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "layout": "Form Card",
+      "features": [
+        "Name, Email, Message inputs",
+        "Submit button"
+      ]
+    }
+  ],
+  "testing": {
+    "rules": [
+      "All interactive elements MUST have data-testid attributes",
+      "Use kebab-case for data-testid (e.g., data-testid='quick-encrypt-button')",
+      "Role-based naming (not appearance-based)"
+    ]
+  }
+}
