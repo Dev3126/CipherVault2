@@ -1,56 +1,78 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { api } from "@/lib/api";
+import AuthCallback from "@/pages/AuthCallback";
+import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
+import CryptoPage from "@/pages/CryptoPage";
+import MyFiles from "@/pages/MyFiles";
+import History from "@/pages/History";
+import Profile from "@/pages/Profile";
+import Settings from "@/pages/Settings";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+function ProtectedRoute({ children }) {
+  const location = useLocation();
+  const passedUser = location.state?.user;
+  const [state, setState] = useState(passedUser ? true : null); // null=checking, true=auth, false=no
 
   useEffect(() => {
-    helloWorldApi();
-  }, []);
+    if (passedUser) return;
+    let active = true;
+    (async () => {
+      try {
+        await api.get("/auth/me");
+        if (active) setState(true);
+      } catch {
+        if (active) setState(false);
+      }
+    })();
+    return () => { active = false; };
+  }, [passedUser]);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+  if (state === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0E1A]">
+        <div className="cv-spin" />
+      </div>
+    );
+  }
+  if (state === false) return <Navigate to="/login" replace />;
+  return children;
+}
 
-function App() {
+function AppRouter() {
+  const location = useLocation();
+  // CRITICAL: process session_id synchronously to prevent race conditions
+  if (location.hash?.includes("session_id=")) {
+    return <AuthCallback />;
+  }
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/encrypt" element={<ProtectedRoute><CryptoPage mode="encrypt" /></ProtectedRoute>} />
+      <Route path="/decrypt" element={<ProtectedRoute><CryptoPage mode="decrypt" /></ProtectedRoute>} />
+      <Route path="/files" element={<ProtectedRoute><MyFiles /></ProtectedRoute>} />
+      <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+      <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
